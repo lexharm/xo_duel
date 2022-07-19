@@ -95,9 +95,9 @@ public class SceneController : MonoBehaviour
         Debug.Log(lastCard.GetComponent<MagicCard>().element + " " + lastCard.GetComponent<MagicCard>().magicObject);
     }
 
-    public MagicCard GetLastCard()
+    public GameObject GetLastCard()
     {
-        return lastCard.GetComponent<MagicCard>();
+        return lastCard;
     }
 
     public string GetActivePlayerSign()
@@ -193,8 +193,8 @@ public class SceneController : MonoBehaviour
             for (int j = 0; j < gridRows; j++)
             {
                 MagicCard temp = gameField[i, j];
-                Element tempElement = lastCard.GetComponent<MagicCard>().element != null ? lastCard.GetComponent<MagicCard>().element : temp.element;
-                MagicObject tempObject = lastCard.GetComponent<MagicCard>().magicObject != null ? lastCard.GetComponent<MagicCard>().magicObject : temp.magicObject;
+                Element tempElement = lastCard.GetComponent<MagicCard>().element;
+                MagicObject tempObject = lastCard.GetComponent<MagicCard>().magicObject;
                 if (temp.owner.Equals("-") && (temp.element == tempElement || temp.magicObject == tempObject))
                 {
                     isNewTurnAvailable = true;

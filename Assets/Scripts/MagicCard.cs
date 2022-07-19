@@ -115,11 +115,10 @@ public class MagicCard : MonoBehaviour
         }
     }
 
-    private bool IsProperCard(MagicCard lastCard)
+    private bool IsProperCard(GameObject lastCard)
     {
         //return true;
-        if ((lastCard != null && (lastCard.element == _element || lastCard.magicObject == magicObject))
-            || lastCard == null) {
+        if ((lastCard.GetComponent<SpriteRenderer>().sprite == null || (lastCard.GetComponent<MagicCard>().element == _element || lastCard.GetComponent<MagicCard>().magicObject == magicObject))) {
             return true;
         }
         Debug.Log("Improper card!");
