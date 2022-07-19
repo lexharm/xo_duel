@@ -1,0 +1,10 @@
+0:41 16.07.2022
+1. Создал проект в Unity.
+2. Создал заготовки текстур в Dall-e.
+3. Посмотрел ролик, рассказывающий о различиях интерфеса и абстрактного класса, а так же о принципах SOLID:
+- Single Responsibility Principle
+- Open CLosed Principle
+- Liskov Substitution Principle
+- Interface Segregation Principle
+- Dependency Inversion Principle
+4. Посмотрел видео про Unity job system (нужно смотреть ещё).
