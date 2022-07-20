@@ -5,9 +5,10 @@ using UnityEngine.EventSystems;
 
 public class MagicCard : MonoBehaviour
 {
-    [SerializeField] private GameObject gameCard;
     [SerializeField] private Sprite image;
     [SerializeField] private SceneController controller;
+
+    private bool _playedOut;
 
     private string _owner;
     public string owner
@@ -53,7 +54,7 @@ public class MagicCard : MonoBehaviour
 
     public void SetCard(int id, Sprite image) {
         _id = id;
-        gameCard.GetComponent<SpriteRenderer>().sprite = image;
+        GetComponent<SpriteRenderer>().sprite = image;
         
         Element element;
         MagicObject magicObject;
@@ -100,11 +101,11 @@ public class MagicCard : MonoBehaviour
     }
 
     public void OnMouseDown() {
-        if (!EventSystem.current.IsPointerOverGameObject() && gameCard.activeSelf && IsProperCard(controller.GetLastCard())) {
-            gameCard.SetActive(false);
-            controller.SetLastCard(gameCard, element, magicObject);
+        if (!EventSystem.current.IsPointerOverGameObject() && !_playedOut && IsProperCard(controller.GetLastCard())) {
+            controller.SetLastCard(this.gameObject);
             this.GetComponent<SpriteRenderer>().sprite = controller.GetActivePlayerSprite();
             _owner = controller.GetActivePlayerSign();
+            _playedOut = true;
             if (!controller.IsNoOneWins() && !controller.IsGameWinned())
             {
                 controller.ChangePlayer();

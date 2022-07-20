@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SceneController : MonoBehaviour
 {
-    private Vector3 _activePosition = new Vector3(-11, -0.5f, -0.5f);
-    private Vector3 _waitingPosition = new Vector3(-12, 0, 0);
+    private Vector3 _activePosition = new Vector3(-9, -0.3f, -0.5f);
+    private Vector3 _waitingPosition = new Vector3(-10, 0.5f, 0);
     private GameObject _activePlayer;
     private GameObject _waitingPlayer;
     private MagicCard[,] gameField = new MagicCard[gridRows, gridCols];
@@ -87,12 +87,11 @@ public class SceneController : MonoBehaviour
         return _activePlayer.GetComponent<SpriteRenderer>().sprite;
     }
 
-    public void SetLastCard(GameObject card, Element element, MagicObject magicObject)
+    public void SetLastCard(GameObject card)
     {
         lastCard.GetComponent<SpriteRenderer>().sprite = card.GetComponent<SpriteRenderer>().sprite;
-        lastCard.GetComponent<MagicCard>().element = element;
-        lastCard.GetComponent<MagicCard>().magicObject = magicObject;
-        Debug.Log(lastCard.GetComponent<MagicCard>().element + " " + lastCard.GetComponent<MagicCard>().magicObject);
+        lastCard.GetComponent<MagicCard>().element = card.GetComponent<MagicCard>().element;
+        lastCard.GetComponent<MagicCard>().magicObject = card.GetComponent<MagicCard>().magicObject;
     }
 
     public GameObject GetLastCard()
