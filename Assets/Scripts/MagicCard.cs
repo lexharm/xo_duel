@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MagicCard : MonoBehaviour
 {
@@ -99,7 +100,7 @@ public class MagicCard : MonoBehaviour
     }
 
     public void OnMouseDown() {
-        if (gameCard.activeSelf && IsProperCard(controller.GetLastCard())) {
+        if (!EventSystem.current.IsPointerOverGameObject() && gameCard.activeSelf && IsProperCard(controller.GetLastCard())) {
             gameCard.SetActive(false);
             controller.SetLastCard(gameCard, element, magicObject);
             this.GetComponent<SpriteRenderer>().sprite = controller.GetActivePlayerSprite();
