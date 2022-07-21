@@ -243,7 +243,7 @@ public class SceneController : MonoBehaviour
         } else
         {
             endGamePopup.SetWinner(_activePlayer);
-            endGamePopup.gameObject.SetActive(true);
         }
+        endGamePopup.gameObject.SetActive(true);
     }
 }

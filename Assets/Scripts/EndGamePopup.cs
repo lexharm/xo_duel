@@ -14,13 +14,6 @@ public class EndGamePopup : MonoBehaviour
 
     }
 
-    public void SetWinner(string winnerTitle, Color color, Sprite sprite)
-    {
-        title.text = winnerTitle;
-        title.color = color;
-        image.sprite = sprite;
-    }
-
     public void SetWinner(Player player)
     {
         title.text = "Winner!";

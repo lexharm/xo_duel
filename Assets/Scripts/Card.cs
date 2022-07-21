@@ -121,6 +121,8 @@ public class Card : MonoBehaviour
         }
         //TODO: Here's needed code showing improper card
         Debug.Log("Improper card!");
+        iTween.ShakePosition(this.gameObject, new Vector3(0.1f, 0.1f, 0), 0.3f);
+        //iTween.ShakePosition(this.gameObject, iTween.Hash("x", 0.1f, "y", 0.1f, "time", 0.7f));
         return false;
     }
 }
