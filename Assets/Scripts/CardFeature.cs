@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Element
+public enum CardFeature
 {
-    FIRE,
-    WATER,
-    LIGHTNING,
-    SOIL
+    FEATURE_1,
+    FEATURE_2,
+    FEATURE_3,
+    FEATURE_4
 }

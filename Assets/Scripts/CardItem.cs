@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum MagicObject
+public enum CardItem
 {
-    CRYSTAL,
-    SPHERE,
-    SCROLL,
-    POISON
+    ITEM_1,
+    ITEM_2,
+    ITEM_3,
+    ITEM_4
 }

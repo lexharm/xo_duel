@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class EndGamePopup : MonoBehaviour
 {
@@ -20,8 +21,16 @@ public class EndGamePopup : MonoBehaviour
         image.sprite = sprite;
     }
 
+    public void SetWinner(Player player)
+    {
+        title.text = "Winner!";
+        Color color = player.GetColor();
+        title.color = new Color(color.r, color.g, color.b);
+        image.sprite = player.GetComponent<SpriteRenderer>().sprite;
+    }
+
     public void Restart()
     {
-        Application.LoadLevel("SampleScene");
+        SceneManager.LoadScene("GameScene");
     }
 }

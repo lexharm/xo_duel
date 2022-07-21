@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 229627470}
   - component: {fileID: 229627472}
   m_Layer: 0
-  m_Name: Blue wizard
+  m_Name: Player_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -201,7 +201,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 229627469}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -9, y: -0.3, z: 0}
+  m_LocalPosition: {x: -9, y: -0.3, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -220,6 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f02ce4aadfd9d49817151d849ba6ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  color: {r: 0, g: 0, b: 1, a: 0}
   sign: O
 --- !u!1 &303254646
 GameObject:
@@ -346,8 +347,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0da411f35d9fc0941be28770c0666fa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 21300000, guid: 7708d396bb1cf9d4082629e0a5f3e0ce, type: 3}
   controller: {fileID: 1354331360}
+  image: {fileID: 21300000, guid: 7708d396bb1cf9d4082629e0a5f3e0ce, type: 3}
 --- !u!212 &308555049
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -530,7 +531,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2069672158}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -578,7 +579,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u041D\u0438\u0447\u044C\u044F!"
+  m_Text: No one wins!
 --- !u!1 &851834615
 GameObject:
   m_ObjectHideFlags: 0
@@ -766,7 +767,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2069672158}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -861,7 +862,7 @@ GameObject:
   - component: {fileID: 1208917340}
   - component: {fileID: 1208917342}
   m_Layer: 0
-  m_Name: Red wizard
+  m_Name: Player_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -946,6 +947,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f02ce4aadfd9d49817151d849ba6ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  color: {r: 1, g: 0, b: 0, a: 0}
   sign: X
 --- !u!1 &1354331359
 GameObject:
@@ -978,11 +980,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   endGamePopup: {fileID: 851834620}
-  player1: {fileID: 1208917339}
-  player2: {fileID: 229627469}
+  player1: {fileID: 1208917342}
+  player2: {fileID: 229627472}
   activePlayerTitle: {fileID: 1857595074}
   originalCard: {fileID: 308555048}
-  lastCard: {fileID: 1821777066}
+  lastCard: {fileID: 1821777069}
   images:
   - {fileID: 21300000, guid: 1fa426904a5992149b6319ce5431eac7, type: 3}
   - {fileID: 21300000, guid: d6125396cb9519e4a8a262f8367816ab, type: 3}
@@ -1425,8 +1427,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0da411f35d9fc0941be28770c0666fa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 0}
   controller: {fileID: 0}
+  image: {fileID: 0}
 --- !u!114 &1821777070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1439,8 +1441,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0da411f35d9fc0941be28770c0666fa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 0}
   controller: {fileID: 0}
+  image: {fileID: 0}
 --- !u!1 &1857595073
 GameObject:
   m_ObjectHideFlags: 0
@@ -1467,7 +1469,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1857595073}
-  m_Text: "\u0425\u043E\u0434 \u041A\u0440\u0430\u0441\u043D\u043E\u0433\u043E \u043C\u0430\u0433\u0430"
+  m_Text: Current turn
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -1564,7 +1566,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1893469164}
-  m_Text: "\u0410\u043A\u0442\u0438\u0432\u043D\u0430\u044F \u043A\u0430\u0440\u0442\u0430"
+  m_Text: Last played card
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -1665,8 +1667,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 890058700}
   - {fileID: 617598225}
+  - {fileID: 890058700}
   m_Father: {fileID: 851834619}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

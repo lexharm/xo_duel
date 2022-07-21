@@ -4,47 +4,52 @@ using UnityEngine;
 
 public class SceneController : MonoBehaviour
 {
-    private Vector3 _activePosition = new Vector3(-9, -0.3f, -0.5f);
-    private Vector3 _waitingPosition = new Vector3(-10, 0.5f, 0);
-    private GameObject _activePlayer;
-    private GameObject _waitingPlayer;
-    private MagicCard[,] gameField = new MagicCard[gridRows, gridCols];
+    [SerializeField] private EndGamePopup endGamePopup;
+    [SerializeField] private Player player1;
+    [SerializeField] private Player player2;
+    [SerializeField] private TextMesh activePlayerTitle;
+    [SerializeField] private Card originalCard;
+    [SerializeField] private Card lastCard;
+    [SerializeField] private Sprite[] images;
+
+    private Vector3 _activePosition;  //new Vector3(-9, -0.3f, -0.5f);
+    private Vector3 _waitingPosition; //new Vector3(-10, 0.5f, 0);
+    private Player _activePlayer;
+    private Player _waitingPlayer;
+    private const int gridRows = 4;
+    private const int gridCols = 4;
+    private Card[,] cardsField = new Card[gridRows, gridCols];
     private bool _isNoOneWins = false;
 
-    public const int gridRows = 4;
-    public const int gridCols = 4;
     public const float offsetX = 3.2f;
     public const float offsetY = 3.2f;
-    [SerializeField] private EndGamePopup endGamePopup;
-    [SerializeField] private GameObject player1;
-    [SerializeField] private GameObject player2;
-    [SerializeField] private TextMesh activePlayerTitle;
-    [SerializeField] private MagicCard originalCard;
-    [SerializeField] private GameObject lastCard;
-    [SerializeField] private Sprite[] images;
 
     
     void Start() {
+        _activePosition = player2.transform.position;
+        _waitingPosition = player1.transform.position;
+
         endGamePopup.gameObject.SetActive(false);
+
         Vector3 startPos = originalCard.transform.position;
         int[] numbers = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
         numbers = ShuffleArray(numbers);
         for (int i = 0; i < gridCols; i++) {
             for (int j = 0; j < gridRows; j++)
             {
-                MagicCard magicCard;
+                Card card;
                 if (i == 0 && j == 0) {
-                    magicCard = originalCard;
+                    card = originalCard;
                 } else {
-                    magicCard = Instantiate(originalCard) as MagicCard;
+                    card = Instantiate(originalCard) as Card;
                 }
                 int index = j * gridCols + i;
                 int id = numbers[index];
-                magicCard.SetCard(id, images[id]);
-                gameField[j, i] = magicCard;
+                card.SetCard(images[id]);
+                cardsField[j, i] = card;
                 float posX = (offsetX * i) + startPos.x;
                 float posY = -(offsetY * j) + startPos.y;
-                magicCard.transform.position = new Vector3(posX, posY, startPos.z);
+                card.transform.position = new Vector3(posX, posY, startPos.z);
             }
         }
         ChangePlayer();
@@ -63,23 +68,17 @@ public class SceneController : MonoBehaviour
 
     public void ChangePlayer()
     {
-        string activePlayerName;
-        Color activeColor;
         if (_activePlayer == player1) {
             _activePlayer = player2;
             _waitingPlayer = player1;
-            activePlayerName = "Синего мага";
-            activeColor = Color.blue;
         } else {
             _activePlayer = player1;
             _waitingPlayer = player2;
-            activePlayerName = "Красного мага";
-            activeColor = Color.red;
         }
         _activePlayer.transform.position = _activePosition;
         _waitingPlayer.transform.position = _waitingPosition;
-        activePlayerTitle.color = activeColor;
-        activePlayerTitle.text = "Ход " + activePlayerName;
+        Color color = _activePlayer.GetColor();
+        activePlayerTitle.color = new Color(color.r, color.g, color.b);
     }
 
     public Sprite GetActivePlayerSprite()
@@ -87,14 +86,12 @@ public class SceneController : MonoBehaviour
         return _activePlayer.GetComponent<SpriteRenderer>().sprite;
     }
 
-    public void SetLastCard(GameObject card)
+    public void SetLastCard(Card card)
     {
-        lastCard.GetComponent<SpriteRenderer>().sprite = card.GetComponent<SpriteRenderer>().sprite;
-        lastCard.GetComponent<MagicCard>().element = card.GetComponent<MagicCard>().element;
-        lastCard.GetComponent<MagicCard>().magicObject = card.GetComponent<MagicCard>().magicObject;
+        lastCard.SetCard(card);
     }
 
-    public GameObject GetLastCard()
+    public Card GetLastCard()
     {
         return lastCard;
     }
@@ -107,7 +104,7 @@ public class SceneController : MonoBehaviour
     public bool IsGameWinned()
     {
         string sign = GetActivePlayerSign();
-        string winnigCombination = sign + sign + sign + sign;
+        string winningCombination = sign + sign + sign + sign;
         string combination;
 
         // 1. Check horizontal condition
@@ -116,9 +113,9 @@ public class SceneController : MonoBehaviour
             combination = "";
             for (int j = 0; j < gridRows; j++)
             {
-                combination += gameField[i, j].owner;
+                combination += cardsField[i, j].Owner;
             }
-            if (combination.Equals(winnigCombination))
+            if (combination.Equals(winningCombination))
             {
                 Debug.Log("Победа по горизонтали " + sign);
                 return true;
@@ -131,9 +128,9 @@ public class SceneController : MonoBehaviour
             combination = "";
             for (int i = 0; i < gridCols; i++)
             {
-                combination += gameField[i, j].owner;
+                combination += cardsField[i, j].Owner;
             }
-            if (combination.Equals(winnigCombination))
+            if (combination.Equals(winningCombination))
             {
                 Debug.Log("Победа по вертикали " + sign);
                 return true;
@@ -146,8 +143,8 @@ public class SceneController : MonoBehaviour
         for (int i = 0; i < gridCols; i++)
         {
             int j = i;
-            combination += gameField[i, j].owner;
-            if (combination.Equals(winnigCombination))
+            combination += cardsField[i, j].Owner;
+            if (combination.Equals(winningCombination))
             {
                 Debug.Log("Победа по диагонали 1 " + sign);
                 return true;
@@ -159,8 +156,8 @@ public class SceneController : MonoBehaviour
         for (int i = 0; i < gridCols; i++)
         {
             int j = gridRows - 1 - i;
-            combination += gameField[i, j].owner;
-            if (combination.Equals(winnigCombination))
+            combination += cardsField[i, j].Owner;
+            if (combination.Equals(winningCombination))
             {
                 Debug.Log("Победа по диагонали 2 " + sign);
                 return true;
@@ -173,11 +170,11 @@ public class SceneController : MonoBehaviour
             combination = "";
             for (int j = 0; j < gridRows - 1; j++)
             {
-                combination = gameField[i, j].owner +
-                              gameField[i + 1, j].owner +
-                              gameField[i, j + 1].owner +
-                              gameField[i + 1, j + 1].owner;
-                if (combination.Equals(winnigCombination))
+                combination = cardsField[i, j].Owner +
+                              cardsField[i + 1, j].Owner +
+                              cardsField[i, j + 1].Owner +
+                              cardsField[i + 1, j + 1].Owner;
+                if (combination.Equals(winningCombination))
                 {
                     Debug.Log("Победа 2x2 " + sign);
                     return true;
@@ -191,10 +188,8 @@ public class SceneController : MonoBehaviour
         {
             for (int j = 0; j < gridRows; j++)
             {
-                MagicCard temp = gameField[i, j];
-                Element tempElement = lastCard.GetComponent<MagicCard>().element;
-                MagicObject tempObject = lastCard.GetComponent<MagicCard>().magicObject;
-                if (temp.owner.Equals("-") && (temp.element == tempElement || temp.magicObject == tempObject))
+                Card tempCard = cardsField[i, j];
+                if (tempCard.Owner.Equals("-") && (tempCard.Feature == lastCard.Feature || tempCard.Item == lastCard.Item))
                 {
                     isNewTurnAvailable = true;
                     break;
@@ -220,8 +215,8 @@ public class SceneController : MonoBehaviour
         {
             for (int j = 0; j < gridRows; j++)
             {
-                MagicCard temp = gameField[i, j];
-                if (temp.owner.Equals("-"))
+                Card temp = cardsField[i, j];
+                if (temp.Owner.Equals("-"))
                 {
                     isNewTurnAvailable = true;
                     break;
@@ -247,11 +242,7 @@ public class SceneController : MonoBehaviour
             endGamePopup.SetNoOneWins();
         } else
         {
-            Sprite winnerSprite = _activePlayer.GetComponent<SpriteRenderer>().sprite;
-            Color winnerColor = _activePlayer == player1 ? Color.red : Color.blue;
-            string winnerTitle = "Победа " + (_activePlayer == player1 ? "красного" : "синего") + " мага!";
-            Debug.Log(winnerTitle);
-            endGamePopup.SetWinner(winnerTitle, winnerColor, winnerSprite);
+            endGamePopup.SetWinner(_activePlayer);
             endGamePopup.gameObject.SetActive(true);
         }
     }

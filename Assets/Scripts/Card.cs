@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MagicCard : MonoBehaviour
+public class Card : MonoBehaviour
 {
-    [SerializeField] private Sprite image;
     [SerializeField] private SceneController controller;
+    [SerializeField] private Sprite image;
 
     private bool _playedOut;
 
     private string _owner;
-    public string owner
+    public string Owner
     {
         get
         {
@@ -22,87 +22,83 @@ public class MagicCard : MonoBehaviour
             _owner = value;
         }
     }
-    private int _id;
-    public int id
-    {
-        get { return _id; }
-    }
-    private Element _element;
-    public Element element
+    private CardFeature _feature;
+    public CardFeature Feature
     {
         get
         {
-            return _element;
+            return _feature;
         }
         set
         {
-            _element = value;
+            _feature = value;
         }
     }
-    private MagicObject _magicObject;
-    public MagicObject magicObject
+    private CardItem _item;
+    public CardItem Item
     {
         get
         {
-            return _magicObject;
+            return _item;
         }
         set
         {
-            _magicObject = value;
+            _item = value;
         }
     }    
 
-    public void SetCard(int id, Sprite image) {
-        _id = id;
+    public void SetCard(Sprite image) {
         GetComponent<SpriteRenderer>().sprite = image;
-        
-        Element element;
-        MagicObject magicObject;
 
         string spriteName = image.name;
 
         if (spriteName.ToUpper().Contains("FIRE"))
         {
-            element = Element.FIRE;
+            _feature = CardFeature.FEATURE_1;
         }
         else if (spriteName.ToUpper().Contains("WATER"))
         {
-            element = Element.WATER;
+            _feature = CardFeature.FEATURE_2;
         }
         else if (spriteName.ToUpper().Contains("LIGHTNING"))
         {
-            element = Element.LIGHTNING;
+            _feature = CardFeature.FEATURE_3;
         }
         else
         {
-            element = Element.SOIL;
+            _feature = CardFeature.FEATURE_4;
         }
 
         if (spriteName.ToUpper().Contains("CRYSTAL"))
         {
-            magicObject = MagicObject.CRYSTAL;
+            _item = CardItem.ITEM_1;
         }
         else if (spriteName.ToUpper().Contains("SPHERE"))
         {
-            magicObject = MagicObject.SPHERE;
+            _item = CardItem.ITEM_2;
         }
         else if (spriteName.ToUpper().Contains("SCROLL"))
         {
-            magicObject = MagicObject.SCROLL;
+            _item = CardItem.ITEM_3;
         }
         else
         {
-            magicObject = MagicObject.POISON;
+            _item = CardItem.ITEM_4;
         }
 
         _owner = "-";
-        _element = element;
-        _magicObject = magicObject;
+    }
+
+    public void SetCard(Card card)
+    {
+        GetComponent<SpriteRenderer>().sprite = card.GetComponent<SpriteRenderer>().sprite;
+        _feature = card.Feature;
+        _item = card.Item;
     }
 
     public void OnMouseDown() {
         if (!EventSystem.current.IsPointerOverGameObject() && !_playedOut && IsProperCard(controller.GetLastCard())) {
-            controller.SetLastCard(this.gameObject);
+            controller.SetLastCard(this.gameObject.GetComponent<Card>());
             this.GetComponent<SpriteRenderer>().sprite = controller.GetActivePlayerSprite();
             _owner = controller.GetActivePlayerSign();
             _playedOut = true;
@@ -111,18 +107,19 @@ public class MagicCard : MonoBehaviour
                 controller.ChangePlayer();
             } else
             {
-                Debug.Log(controller.IsNoOneWins() + " " + !controller.IsGameWinned());
                 controller.ShowEndGamePopup();
             }
         }
     }
 
-    private bool IsProperCard(GameObject lastCard)
+    private bool IsProperCard(Card lastCard)
     {
         //return true;
-        if ((lastCard.GetComponent<SpriteRenderer>().sprite == null || (lastCard.GetComponent<MagicCard>().element == _element || lastCard.GetComponent<MagicCard>().magicObject == magicObject))) {
+        if ((lastCard.GetComponent<SpriteRenderer>().sprite == null ||
+            (lastCard.Feature == _feature || lastCard.Item == _item))) {
             return true;
         }
+        //TODO: Here's needed code showing improper card
         Debug.Log("Improper card!");
         return false;
     }
