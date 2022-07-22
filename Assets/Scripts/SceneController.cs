@@ -75,8 +75,10 @@ public class SceneController : MonoBehaviour
             _activePlayer = player1;
             _waitingPlayer = player2;
         }
-        _activePlayer.transform.position = _activePosition;
-        _waitingPlayer.transform.position = _waitingPosition;
+        //_activePlayer.transform.position = _activePosition;
+        iTween.MoveTo(_activePlayer.gameObject, iTween.Hash("path", new Vector3[] { _waitingPosition + new Vector3(-1, 1, -0.5f), _activePosition }, "time", 1.5f));
+        //_waitingPlayer.transform.position = _waitingPosition;
+        iTween.MoveTo(_waitingPlayer.gameObject, iTween.Hash("path", new Vector3[] { _activePosition + new Vector3(1, -1, 0.5f), _waitingPosition }, "time", 1.5f));
         Color color = _activePlayer.GetColor();
         activePlayerTitle.color = new Color(color.r, color.g, color.b);
     }

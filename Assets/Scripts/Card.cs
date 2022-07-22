@@ -98,8 +98,9 @@ public class Card : MonoBehaviour
 
     public void OnMouseDown() {
         if (!EventSystem.current.IsPointerOverGameObject() && !_playedOut && IsProperCard(controller.GetLastCard())) {
-            controller.SetLastCard(this.gameObject.GetComponent<Card>());
-            this.GetComponent<SpriteRenderer>().sprite = controller.GetActivePlayerSprite();
+            controller.SetLastCard(GetComponent<Card>());
+            iTween.RotateTo(gameObject, iTween.Hash("rotation", new Vector3(0, 90, 0),
+                "time", 0.7f, "oncompletetarget", gameObject, "oncomplete", "OnHalfRotateCard"));
             _owner = controller.GetActivePlayerSign();
             _playedOut = true;
             if (!controller.IsNoOneWins() && !controller.IsGameWinned())
@@ -112,6 +113,12 @@ public class Card : MonoBehaviour
         }
     }
 
+    private void OnHalfRotateCard()
+    {
+        GetComponent<SpriteRenderer>().sprite = controller.GetActivePlayerSprite();
+        iTween.RotateTo(gameObject, iTween.Hash("rotation", new Vector3(0, 0, 0), "time", 0.7f));
+    }
+
     private bool IsProperCard(Card lastCard)
     {
         //return true;
@@ -121,7 +128,7 @@ public class Card : MonoBehaviour
         }
         //TODO: Here's needed code showing improper card
         Debug.Log("Improper card!");
-        iTween.ShakePosition(this.gameObject, new Vector3(0.1f, 0.1f, 0), 0.3f);
+        iTween.ShakePosition(this.gameObject, new Vector3(0.1f, 0.1f, 0), 0.25f);
         //iTween.ShakePosition(this.gameObject, iTween.Hash("x", 0.1f, "y", 0.1f, "time", 0.7f));
         return false;
     }
