@@ -101,15 +101,7 @@ public class Card : MonoBehaviour
             controller.SetLastCard(GetComponent<Card>());
             iTween.RotateTo(gameObject, iTween.Hash("rotation", new Vector3(0, 90, 0),
                 "time", 0.7f, "oncompletetarget", gameObject, "oncomplete", "OnHalfRotateCard"));
-            _owner = controller.GetActivePlayerSign();
-            _playedOut = true;
-            if (!controller.IsNoOneWins() && !controller.IsGameWinned())
-            {
-                controller.ChangePlayer();
-            } else
-            {
-                controller.ShowEndGamePopup();
-            }
+            
         }
     }
 
@@ -117,6 +109,16 @@ public class Card : MonoBehaviour
     {
         GetComponent<SpriteRenderer>().sprite = controller.GetActivePlayerSprite();
         iTween.RotateTo(gameObject, iTween.Hash("rotation", new Vector3(0, 0, 0), "time", 0.7f));
+        _owner = controller.GetActivePlayerSign();
+        _playedOut = true;
+        if (!controller.IsNoOneWins() && !controller.IsGameWinned())
+        {
+            controller.ChangePlayer();
+        }
+        else
+        {
+            controller.ShowEndGamePopup();
+        }
     }
 
     private bool IsProperCard(Card lastCard)
